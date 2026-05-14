@@ -1,6 +1,6 @@
-import { db } from './client';
+import path from 'node:path';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import path from 'path';
+import { db } from './client';
 
 export async function runMigrations() {
   if (process.env.NEXT_PHASE === 'phase-production-build') return;
@@ -10,9 +10,11 @@ export async function runMigrations() {
 
   while (currentRetry < maxRetries) {
     try {
-      console.log(`⏳ Running Drizzle migrations (Attempt ${currentRetry + 1}/${maxRetries})...`);
+      console.log(
+        `⏳ Running Drizzle migrations (Attempt ${currentRetry + 1}/${maxRetries})...`,
+      );
       await migrate(db, {
-        migrationsFolder: path.join(process.cwd(), 'drizzle')
+        migrationsFolder: path.join(process.cwd(), 'drizzle'),
       });
       console.log('✅ Migrations completed');
       return;
@@ -23,11 +25,13 @@ export async function runMigrations() {
           console.error('❌ Migration failed (Strict Mode):', error);
           process.exit(1);
         } else {
-          console.warn('⚠️ Migration failed after multiple attempts (Dev Mode). Skipping...');
+          console.warn(
+            '⚠️ Migration failed after multiple attempts (Dev Mode). Skipping...',
+          );
         }
       } else {
         console.log(`📡 DB not ready, retrying in 2s...`);
-        await new Promise(res => setTimeout(res, 2000));
+        await new Promise((res) => setTimeout(res, 2000));
       }
     }
   }
