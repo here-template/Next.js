@@ -19,6 +19,7 @@ export async function runMigrations() {
       console.log('✅ Migrations completed');
       return;
     } catch (error) {
+      console.error(`❌ Attempt ${currentRetry + 1} failed:`, error);
       currentRetry++;
       if (currentRetry >= maxRetries) {
         if (process.env.NODE_ENV === 'production') {
