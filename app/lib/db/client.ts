@@ -8,9 +8,11 @@ const globalForDb = global as unknown as {
   conn: postgres.Sql | undefined;
 };
 
-const conn = globalForDb.conn ?? postgres(connectionString, {
-  onnotice: () => {},
-});
+const conn =
+  globalForDb.conn ??
+  postgres(connectionString, {
+    onnotice: () => {},
+  });
 if (process.env.NODE_ENV !== 'production') globalForDb.conn = conn;
 
 export const db = drizzle(conn);
