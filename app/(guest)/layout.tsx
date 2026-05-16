@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import type React from 'react';
 import { auth } from '@/lib/auth';
-import type React from "react";
 
 export default async function GuestLayout({
   children,
