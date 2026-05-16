@@ -1,5 +1,5 @@
 <!-- BEGIN:drizzle -->
-- If you need to migrate the databse, never use `migrate.ts`. Instead, use `drizzle-kit` CLI. For example, to create a new migration, run `bunx drizzle-kit generate:migration <migration-name>`. To run the migrations, use `bunx drizzle-kit migrate`. This ensures that your database schema is properly managed and versioned.
+- If you need to migrate the databse,  use `bun run db:generate` to create migration, then use `bun run db:migrate` to apply migration to the DB. Migrations are automatically applied when the application starts (via `instrumentation.ts`), so you can skip the manual step if you prefer.
 <!-- END:drizzle -->
 
 <!-- BEGIN:nextjs-agent-rules -->
