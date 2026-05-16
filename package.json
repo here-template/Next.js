@@ -10,7 +10,7 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun app/lib/db/migrate.ts",
+    "db:migrate": "bun lib/db/migrate.ts",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:drop": "drizzle-kit drop",
