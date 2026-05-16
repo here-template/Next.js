@@ -8,6 +8,7 @@ export default defineConfig({
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
+    // biome-ignore lint/style/noNonNullAssertion: database url is required
     url: process.env.DATABASE_URL!,
   },
   verbose: true,
