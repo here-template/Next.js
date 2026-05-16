@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js 16 + Better Auth + Drizzle Template
 
-## Getting Started
+A modern, production-ready Next.js 16 starter template featuring robust authentication, database management, and optimized route organization.
 
-First, run the development server:
+## 🚀 Features
 
+- **Next.js 16 (App Router)**: Utilizing the latest React 19 features and Turbopack.
+- **Better Auth**: Comprehensive authentication system with session management.
+- **Automated Migrations**: Database migrations are automatically applied on application launch.
+- **Drizzle ORM**: Type-safe database interactions with PostgreSQL.
+- **Route Groups & Security Proxy**:
+  - `(authenticated)`: Private routes protected by a server-side layout proxy.
+  - `(guest)`: Public-only routes (Login/Register) with auto-redirect for logged-in users.
+- **Path Aliases**: Standardized `@/*` imports for clean and reliable module resolution.
+- **Biome**: Ultra-fast linting and formatting.
+- **Tailwind CSS 4**: Modern styling with native CSS variable support.
+
+## 📁 Project Structure
+
+```text
+├── app/
+│   ├── (authenticated)/  # Protected routes (requires login)
+│   │   ├── layout.tsx    # Security Proxy & Permission check
+│   │   └── page.tsx      # Dashboard / Home
+│   ├── (guest)/          # Public routes (login, register)
+│   │   ├── layout.tsx    # Guest-only redirect logic
+│   │   ├── login/
+│   │   └── register/
+│   ├── api/auth/         # Better Auth API handlers
+│   └── layout.tsx        # Root layout
+├── components/           # UI Components (shadcn/ui)
+├── lib/
+│   ├── db/               # Drizzle schema and client
+│   ├── auth.ts           # Server-side Auth config
+│   └── auth-client.ts    # Client-side Auth hook
+└── drizzle/              # Generated migrations
+```
+
+## 🛠️ Getting Started
+
+### 1. Environment Setup
+Copy `.env.example` to `.env.local` and fill in your credentials:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+cp .env.example .env.local
+```
+
+### 2. Database
+Start the local database using Docker:
+```bash
+bun db:up
+```
+
+Generate migrations after making changes to your schema:
+```bash
+bun db:generate
+```
+
+*Note: Migrations are automatically applied when the application starts (via `instrumentation.ts`). You can also run them manually using `bun db:migrate`.*
+
+### 3. Development
+Install dependencies and run the server:
+```bash
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see your app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📜 Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `bun dev`: Start development server with Turbopack.
+- `bun lint:fix`: Run Biome to fix linting and formatting.
+- `bun db:generate`: Generate migration files from your schema.
+- `bun db:migrate`: Manually apply migrations to the database.
+- `bun db:studio`: Open Drizzle Studio to explore your data.
 
-## Learn More
+## 🔒 Security & Permissions
 
-To learn more about Next.js, take a look at the following resources:
+The `app/(authenticated)/layout.tsx` file acts as a centralized security proxy. It checks for a valid session before rendering any children. 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A commented-out placeholder is available in the layout to implement role-based access control (RBAC):
+```typescript
+// const userRole = session.user.role;
+// if (!allowedRoles.includes(userRole)) redirect('/dashboard?error=denied');
+```
